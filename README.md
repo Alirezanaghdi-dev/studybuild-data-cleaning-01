@@ -1,9 +1,5 @@
 # studybuild-data-cleaning-01
 Project 01: Data Cleaning on a Real E-commerce Dataset
-# تمیز کردن دیتاست First Dataset
-
-این فایل مراحل تمیزکاری (Data Cleaning) روی دیتاست `First Dataset.xlsx` رو به ترتیب توضیح می‌ده.
-
 دیتاست اولیه شامل ۶۱ ردیف و ۱۷ ستون بود. بعد از تمیزکاری، به **۵۶ ردیف** رسید.
 
 ---
