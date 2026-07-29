@@ -1,0 +1,15 @@
+## Data Cleaning Methodology
+
+The initial dataset presented several structural and logical challenges that required a comprehensive cleaning pipeline before any analysis could begin. Issues included hidden whitespaces, inconsistent capitalization across categorical columns, incorrect data types (such as `signup_date` being stored as text), and missing values in both the `age` and `total_spending` columns. Furthermore, there were logical inconsistencies where calculated customer spending did not match the listed totals, alongside cultural data entry errors regarding customer names and their assigned genders.
+
+To address these issues, I built a data cleaning pipeline in **Python**, utilizing **Pandas** for tabular manipulation and **NumPy** for precise floating-point mathematical comparisons. The project environment and dependencies were managed using the **uv** package manager. 
+
+The cleaning process followed a strict sequence to ensure data integrity:
+
+*   **Deduplication & Standardization:** The pipeline first checked for absolute row-level duplicates, keeping only the first occurrence to ensure no identical records were processed twice. I then standardized the text formatting across all string columns to prevent duplicate categories (e.g., merging "tehran" and "Tehran") and converted the `signup_date` column into a proper Pandas `datetime` object to enable accurate time-based operations.
+*   **Imputing Missing Values:** Instead of dropping rows with missing data, I used specific strategies to preserve them. Because `total_spending` is a deterministic value, I calculated the exact missing numbers by multiplying the `purchase_count` by the `avg_order_value`. For missing `age` values, I imputed the median age of the dataset, which is statistically safer and more resistant to extreme outliers than the mean.
+*   **Handling Outliers and Invalid Data:** I filtered the dataset for illogical values, dropping one invalid row containing an impossible age outside the 0-120 range. To manage extreme high-spenders, I applied the Interquartile Range (IQR) method. The 5 records that exceeded the upper bound (`Q3 + 1.5 * IQR`) were Winsorized (capped) rather than deleted. This retained these valuable customers while preventing them from heavily skewing the dataset averages or future machine learning models.
+*   **Validation and Manual Review:** Because automated overwrites can destroy valid but unusual relational data, I built a validation layer to isolate logical mismatches. This flagged 5 specific rows with incorrect spending totals, alongside several cultural gender typos. I exported these isolated rows for manual correction and seamlessly merged the fixed data back into the main pipeline.
+
+**Final State**
+The final dataset is pristine and highly reliable. It contains zero missing values, perfectly standardized categorical text, proper datetime objects, and logically validated relationships. It is fully ready for business intelligence visualization and machine learning tasks without the risk of structural errors.
