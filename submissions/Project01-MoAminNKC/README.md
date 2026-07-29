@@ -1,15 +1,42 @@
-## Data Cleaning Methodology
+# E-commerce Customer Data Cleaning Project (project-01-data-cleaning-MoAminNKC)
 
-The initial dataset presented several structural and logical challenges that required a comprehensive cleaning pipeline before any analysis could begin. Issues included hidden whitespaces, inconsistent capitalization across categorical columns, incorrect data types (such as `signup_date` being stored as text), and missing values in both the `age` and `total_spending` columns. Furthermore, there were logical inconsistencies where calculated customer spending did not match the listed totals, alongside cultural data entry errors regarding customer names and their assigned genders.
+## Project Overview
+In this project, I explored and cleaned a dataset of e-commerce customers to identify issues and logically correct them. The goal was to transform raw, messy data into a reliable dataset ready for Exploratory Data Analysis (EDA) and further business insights.
 
-To address these issues, I built a data cleaning pipeline in **Python**, utilizing **Pandas** for tabular manipulation and **NumPy** for precise floating-point mathematical comparisons. The project environment and dependencies were managed using the **uv** package manager. 
+## Tools & Technologies
+- **Languages/Libraries:** Python, Pandas, NumPy, ydata-profiling [cite: 1, 2]
+- **Environments:** Jupyter Notebook [cite: 1, 2]
+- **Software:** Microsoft Excel [cite: 1]
 
-The cleaning process followed a strict sequence to ensure data integrity:
+## Data Cleaning Workflow
 
-*   **Deduplication & Standardization:** The pipeline first checked for absolute row-level duplicates, keeping only the first occurrence to ensure no identical records were processed twice. I then standardized the text formatting across all string columns to prevent duplicate categories (e.g., merging "tehran" and "Tehran") and converted the `signup_date` column into a proper Pandas `datetime` object to enable accurate time-based operations.
-*   **Imputing Missing Values:** Instead of dropping rows with missing data, I used specific strategies to preserve them. Because `total_spending` is a deterministic value, I calculated the exact missing numbers by multiplying the `purchase_count` by the `avg_order_value`. For missing `age` values, I imputed the median age of the dataset, which is statistically safer and more resistant to extreme outliers than the mean.
-*   **Handling Outliers and Invalid Data:** I filtered the dataset for illogical values, dropping one invalid row containing an impossible age outside the 0-120 range. To manage extreme high-spenders, I applied the Interquartile Range (IQR) method. The 5 records that exceeded the upper bound (`Q3 + 1.5 * IQR`) were Winsorized (capped) rather than deleted. This retained these valuable customers while preventing them from heavily skewing the dataset averages or future machine learning models.
-*   **Validation and Manual Review:** Because automated overwrites can destroy valid but unusual relational data, I built a validation layer to isolate logical mismatches. This flagged 5 specific rows with incorrect spending totals, alongside several cultural gender typos. I exported these isolated rows for manual correction and seamlessly merged the fixed data back into the main pipeline.
+### 1. Handling Duplicates
+- Identified and removed one completely duplicate row, reducing the dataset from 61 to 60 records. [cite: 1]
 
-**Final State**
-The final dataset is pristine and highly reliable. It contains zero missing values, perfectly standardized categorical text, proper datetime objects, and logically validated relationships. It is fully ready for business intelligence visualization and machine learning tasks without the risk of structural errors.
+### 2. Missing Values & Outliers
+- **Age:** Addressed missing values and illogical entries (e.g., an age of 145, or ages < 0 / > 120) by replacing them with the median age (45) to prevent outliers from skewing the data. [cite: 1]
+- **Total Spending:** Resolved missing and incorrect values (e.g., a massive outlier of 25,000) by recalculating them using the established formula: `total_spending = purchase_count * avg_order_value`. [cite: 1]
+- Statistical outliers in total spending were capped (Winsorized) using the Interquartile Range (IQR) method to preserve high-spending customer data without skewing averages. [cite: 1]
+
+### 3. Structural Cleaning & Type Conversion
+- Converted the `signup_date` column from string/object to proper datetime formats. [cite: 1]
+- Adjusted the `age` column to integer after resolving missing values. [cite: 1]
+- Stripped hidden leading/trailing spaces across all text columns. [cite: 1]
+- Standardized text casing (e.g., Title Case for names, cities, and membership tiers, and Upper Case for genders). [cite: 1]
+
+### 4. Logical Inconsistencies & Data Standardization
+- **Purchase vs. Returns:** Discovered records where `returned_items` exceeded `purchase_count`. Rather than guessing, these impossible values were converted to NaN to maintain data integrity.
+- **Gender Standardization:** Mapped and corrected gender values (`M` for Male, `F` for Female) based on the most frequent occurrence for each first name to resolve data entry inconsistencies. [cite: 1]
+
+### 5. The Manual Review Process
+- Advanced validation masks were created to flag categorical errors (invalid genders, tiers) and relational math mismatches. [cite: 1]
+- Instead of applying a blanket automated script to fix complex discrepancies, these flagged rows were exported to a separate file (`requires_manual_fix.xlsx`). [cite: 1]
+- I cleaned this subset by hand, as this deliberate, manual approach ensured higher accuracy for nuanced errors. 
+- The manually corrected data was then re-integrated with the primary clean dataset to form the final `cleaned_dataset.xlsx`. [cite: 1]
+
+### 6. Exploratory Data Analysis (EDA)
+- With the dataset fully cleaned, column names were mapped to readable titles (e.g., `avg_order_value` to `Average Order Value`). [cite: 2]
+- Utilized `ydata_profiling` to automatically generate a comprehensive HTML report for in-depth data profiling. 👉 **[Click here to view the Customer Analysis Report](report/customer_analysis_report.html)** [cite: 2]
+
+## Final Result
+The final output is a pristine dataset of 60 records, free of duplicates, illogical values, and formatting errors, alongside an automated profiling report for immediate business analysis. [cite: 1, 2]
