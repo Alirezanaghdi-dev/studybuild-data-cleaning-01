@@ -36,7 +36,7 @@ In this project, I explored and cleaned a dataset of e-commerce customers to ide
 
 ### 6. Exploratory Data Analysis (EDA)
 - With the dataset fully cleaned, column names were mapped to readable titles (e.g., `avg_order_value` to `Average Order Value`). [cite: 2]
-- Utilized `ydata_profiling` to automatically generate a comprehensive HTML report for in-depth data profiling. 👉 **[Click here to view the Customer Analysis Report](report/customer_analysis_report.html)** [cite: 2]
+- Utilized `ydata_profiling` to automatically generate a comprehensive HTML report for in-depth data profiling. 👉 **[Click here to view the Customer Analysis Report](https://MoAminNKC.github.io/studybuild-data-cleaning-01/submissions/Project01-MoAminNKC/report/customer_analysis_report.html)** [cite: 2]
 
 ## Final Result
 The final output is a pristine dataset of 60 records, free of duplicates, illogical values, and formatting errors, alongside an automated profiling report for immediate business analysis. [cite: 1, 2]
