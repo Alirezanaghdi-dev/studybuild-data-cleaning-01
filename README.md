@@ -1,66 +1,47 @@
-# StudyBuild Project 01 — Data Cleaning
+# Data Cleaning Report
 
-Welcome to the first StudyBuild project.
+## Overview
+I cleaned up a raw customer dataset to fix data quality issues, handle missing values, and make sure the numbers add up logically before doing any further analysis.
 
-In this project, participants will work on an e-commerce dataset and prepare it for future analysis and machine learning tasks.
+---
 
-## Project Objective
+## 1. Issues Found in Raw Data
+When checking the dataset, I ran into a few problems:
+* Missing data in several columns.
+* Duplicate customer entries based on `customer_id`.
+* Inconsistent text formats (spaces, lowercase/uppercase mix, typos in city names).
+* Wrong gender entries that didn't match first names.
+* Unrealistic numbers (e.g. age > 100, or returned items higher than total purchases).
+* Date columns stored as regular text instead of dates.
 
-The main objective is to identify and fix common data-quality problems, including:
+---
 
-- Missing values
-- Duplicate records
-- Incorrect data types
-- Inconsistent text values
-- Extra spaces
-- Incorrect date formats
-- Invalid or illogical values
-- Outliers
-- Inconsistent column names
+## 2. What I Fixed & Why
 
-## Dataset
+* **Missing Data & Duplicates:** 
+  Filled missing numbers with the column median to keep things balanced, and filled missing categories with the most frequent value. Dropped duplicate rows based on `customer_id`.
 
-The dataset is available in the `dataset` folder.
+* **Text Formatting & Gender Fix:**
+  Trimmed extra spaces and fixed capitalization across text columns. Corrected the `gender` column by matching it against first names to fix conflicts.
 
-Participants should first inspect the original dataset and avoid directly modifying the original file.
+* **Fixing Logic & Math Errors:**
+  Recalculated `total_spending` (`purchase_count * avg_order_value`) so the math actually makes sense. Capped `returned_items` at `purchase_count` so no one has more returns than actual buys.
 
-## Project Tasks
+* **Outliers & Dates:**
+  Replaced ages over 100 with the median age. Converted `signup_date` to `datetime64` so it's ready for any time-based analysis.
 
-1. Load and inspect the dataset.
-2. Check the shape, columns and data types.
-3. Identify missing values.
-4. Detect duplicate records.
-5. Correct incorrect data types.
-6. Standardise text and categorical values.
-7. Clean column names.
-8. Check numerical values and possible outliers.
-9. Check relationships between columns.
-10. Save the cleaned dataset.
-11. Document all cleaning decisions.
+---
 
-## Expected Deliverables
+## 3. Tools Used
+* Python (Pandas, NumPy)
 
-Each submission should preferably include:
+---
 
-- Jupyter Notebook or analysis script
-- Cleaned dataset
-- README file explaining the cleaning process
-- Optional PDF report or visualisations
+## 4. Quick Comparison
 
-## Repository Structure
-
-```text
-studybuild-data-cleaning-01/
-│
-├── dataset/
-│   └── original_dataset.csv
-│
-├── submissions/
-│   └── Project01-GitHubUsername/
-│       ├── notebook/
-│       ├── data/
-│       └── README.md
-│
-├── LICENSE
-└── README.md
-
+| Feature | Raw Data | Cleaned Data |
+| :--- | :--- | :--- |
+| **Duplicates & Missing Values** | Present | Fully cleaned |
+| **Math & Logic** | Had mismatches in spending & returns | Fixed and consistent |
+| **Text & Names** | Typos, extra spaces, mixed casing | Clean and standardized |
+| **Dates** | Stored as text | Converted to proper dates |
